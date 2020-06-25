@@ -1,0 +1,133 @@
+Microsoft (R) Macro Assembler Version 14.25.28610.4	    05/11/20 16:07:17
+Asm03.asm						     Page 1 - 1
+
+
+				.586P
+				.model flat, stdcall
+				includelib kernel32.lib
+				includelib user32.lib
+
+				ExitProcess PROTO : DWORD
+				MessageBoxA PROTO : DWORD, : DWORD, : DWORD, : DWORD
+
+				.stack 4096
+
+ 00000000			.const
+
+ 00000000			.DATA
+ 00000000 10 20 30 40		myBytes		BYTE	10h, 20h, 30h, 40h
+ 00000004 00000001		myArray		DWORD	1h, 16h, 3h, 0h, 5h, 6h, 0Ch
+	   00000016
+	   00000003
+	   00000000
+	   00000005
+	   00000006
+	   0000000C
+ 00000020 C7 E8 ED EE E2	windowName	byte	"Зинович Елизавета Игоревна, 1 курс, 4 группа", 0			
+	   E8 F7 20 C5 EB
+	   E8 E7 E0 E2 E5
+	   F2 E0 20 C8 E3
+	   EE F0 E5 E2 ED
+	   E0 2C 20 31 20
+	   EA F3 F0 F1 2C
+	   20 34 20 E3 F0
+	   F3 EF EF E0 00
+ 0000004D D0 E5 E7 F3 EB	result		byte	"Результат: ", "0"
+	   FC F2 E0 F2 3A
+	   20 30
+ 00000000			.CODE
+
+ 00000000			main PROC
+
+ 00000000  BE 00000000 R		mov		esi, offset myBytes
+ 00000005  8A 26			mov		ah, [esi]
+ 00000007  8A 46 02			mov     al, [esi+2]					
+					
+ 0000000A			ARRAYSUM: 
+ 0000000A  BE 00000004 R			mov		esi, offset myArray
+ 0000000F  B9 00000007				mov		ecx, 7
+ 00000014  B8 00000000				mov		eax, 0
+ 00000019				CYCLESUM:	
+ 00000019  03 06				add		eax, [esi]
+ 0000001B  83 C6 04				add		esi, 4
+ 0000001E  E2 F9			loop CYCLESUM
+
+ 00000020			ARRAYZERO:
+ 00000020  BE 00000004 R			mov		esi, offset myArray
+ 00000025  B9 00000007				mov		ecx, 7
+ 0000002A  BB 00000001				mov		ebx, 1
+ 0000002F				CYCLEZERO:	
+ 0000002F  8B 06				mov		eax, [esi]
+ 00000031  83 F8 00				cmp		eax, 0
+ 00000034  74 07				je		zero		
+ 00000036  83 C6 04				add		esi, 4
+ 00000039  E2 F4			loop CYCLEZERO
+
+ 0000003B  EB 05				jmp nozero
+ 0000003D				zero: 
+ 0000003D  BB 00000000				mov ebx, 0
+ 00000042				nozero:
+
+ 00000042  8B C3				mov		eax, ebx
+ 00000044  83 C0 30				add     eax, '0'					
+ 00000047  BB 0000004D R			mov		ebx, offset result
+ 0000004C  89 43 0B				mov		[ebx+11], eax
+
+							invoke MessageBoxA, 0, OFFSET result, OFFSET windowName, 0
+
+ 00000062  6A FF				push - 1
+ 00000064  E8 00000000 E			call ExitProcess
+ 00000069			main ENDP
+				end main
+Microsoft (R) Macro Assembler Version 14.25.28610.4	    05/11/20 16:07:17
+Asm03.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000059 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000069 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+MessageBoxA  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000069 Public STDCALL
+  ARRAYSUM . . . . . . . . . . .	L Near	 0000000A _TEXT	
+  CYCLESUM . . . . . . . . . . .	L Near	 00000019 _TEXT	
+  ARRAYZERO  . . . . . . . . . .	L Near	 00000020 _TEXT	
+  CYCLEZERO  . . . . . . . . . .	L Near	 0000002F _TEXT	
+  zero . . . . . . . . . . . . .	L Near	 0000003D _TEXT	
+  nozero . . . . . . . . . . . .	L Near	 00000042 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+myArray  . . . . . . . . . . . .	DWord	 00000004 _DATA	
+myBytes  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+result . . . . . . . . . . . . .	Byte	 0000004D _DATA	
+windowName . . . . . . . . . . .	Byte	 00000020 _DATA	
+
+	   0 Warnings
+	   0 Errors

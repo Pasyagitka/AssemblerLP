@@ -1,0 +1,2 @@
+I:\ЯП лабораторные\LP_Asm01\Debug\LP_Asm01.exe
+I:\ЯП лабораторные\LP_Asm01\Debug\LP_Asm01.pdb

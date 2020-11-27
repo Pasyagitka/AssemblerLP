@@ -1,0 +1,101 @@
+Microsoft (R) Macro Assembler Version 14.27.29112.0	    11/11/20 11:59:52
+LP_asm01.asm						     Page 1 - 1
+
+
+				.586P
+				.model flat, stdcall
+				includelib kernel32.lib
+				includelib user32.lib
+
+				ExitProcess PROTO: DWORD									; прототип функции дл€ завершени€ процесса Windows 
+
+				.STACK 4096													; выделение стека объЄмом 4 мегабайта	
+ 00000000			.CONST
+ 00000000			.DATA
+ 00000000 0000000C			myarray sdword 12, 16, 54, -3, 8, 79, 4, 2, -10, 6			; массив заполненый 10-ю значени€ми
+	   00000010
+	   00000036
+	   FFFFFFFD
+	   00000008
+	   0000004F
+	   00000004
+	   00000002
+	   FFFFFFF6
+	   00000006
+ 00000028 00000000			min sdword ?
+
+ 00000000			.CODE
+ 00000000			getmin PROC array : sdword, arraysize : dword					; объ€вление функции с параметрами
+ 00000003  8B 75 08			mov ESI, array		
+ 00000006  8B 06			mov EAX, [ESI]
+ 00000008  FF 4D 0C			dec arraysize
+ 0000000B  8B 4D 0C			mov ECX, arraysize								
+
+ 0000000E				MINLOOP:
+ 0000000E  83 C6 04				add ESI, 4
+ 00000011  39 06				cmp [ESI], EAX
+ 00000013  7F 02				jg MORE			
+ 00000015  8B 06				mov EAX, [ESI]
+
+ 00000017					MORE:
+ 00000017  E2 F5			loop MINLOOP
+
+					ret														;возврат результат в регистре eax
+ 0000001D			getmin ENDP													
+
+ 0000001D			main PROC		
+					invoke getmin, offset myarray, lengthof myarray
+ 00000029  A3 00000028 R		mov min, eax											
+
+ 0000002E  6A FF			push -1													
+ 00000030  E8 00000000 E		call ExitProcess										
+ 00000035			main ENDP													
+				end main						
+Microsoft (R) Macro Assembler Version 14.27.29112.0	    11/11/20 11:59:52
+LP_asm01.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000002C Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000035 Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+getmin . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000001D Public STDCALL
+  array  . . . . . . . . . . . .	DWord	 bp + 00000008
+  arraysize  . . . . . . . . . .	DWord	 bp + 0000000C
+  MINLOOP  . . . . . . . . . . .	L Near	 0000000E _TEXT	
+  MORE . . . . . . . . . . . . .	L Near	 00000017 _TEXT	
+main . . . . . . . . . . . . . .	P Near	 0000001D _TEXT	Length= 00000018 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+min  . . . . . . . . . . . . . .	DWord	 00000028 _DATA	
+myarray  . . . . . . . . . . . .	DWord	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors

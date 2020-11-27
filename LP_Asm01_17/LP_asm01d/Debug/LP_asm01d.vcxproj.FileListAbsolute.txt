@@ -1,0 +1,4 @@
+G:\3 семестр\ЯП лабораторные\LP_asm01\Debug\LP_asm01d.pdb
+G:\3 семестр\ЯП лабораторные\LP_asm01\LP_asm01d\Debug\LP_asm01d.pdb
+E:\3 семестр\ЯП лабораторные\LP_asm01\Debug\LP_asm01d.pdb
+E:\3 семестр\ЯП лабораторные\LP_asm01\LP_asm01d\Debug\LP_asm01d.pdb
